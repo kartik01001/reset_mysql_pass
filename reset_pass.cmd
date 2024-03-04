@@ -1,7 +1,19 @@
 cd c:\
-echo ALTER USER 'root'@'localhost' IDENTIFIED BY '1234'; > reset.txt
+echo ALTER USER 'root'@'localhost' IDENTIFIED BY 'baby'; > reset.txt
 cd C:\Program Files\MySQL\MySQL Server*\bin
-net stop MySQL83
+
+set "service_name="
+for /f "tokens=2 delims=: " %%s in ('sc query state^= all ^| find "MySQL"') do (
+    if "%%s" neq "MySQL" (
+        set "service_name=%%s"
+        goto :found1
+    )
+)
+echo Error: MySQL service not found.
+exit /b 1
+
+:found1
+net stop "%service_name%"
 
 set "mysql_ini="
 for /D %%d in ("C:\ProgramData\MySQL\MySQL Server *") do (
