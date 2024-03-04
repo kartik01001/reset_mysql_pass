@@ -1,5 +1,8 @@
+@echo off
+title MySQL Server Password Reset
 cd c:\
-echo ALTER USER 'root'@'localhost' IDENTIFIED BY 'baby'; > reset.txt
+set /p userInput="Enter new password: "
+echo ALTER USER 'root'@'localhost' IDENTIFIED BY '%userInput%'; > reset.txt
 cd C:\Program Files\MySQL\MySQL Server*\bin
 
 set "service_name="
@@ -31,6 +34,6 @@ start mysqld.exe --defaults-file="%mysql_ini%" --init-file=C:\reset.txt
 timeout 5 > NUL
 
 taskkill/im mysqld.exe /F
-net start MySQL83
+net start "%service_name%"
 cd c:\
 del reset.txt
